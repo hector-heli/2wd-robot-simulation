@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,50 +7,31 @@ public class WheelsController : MonoBehaviour
 {
     public WheelCollider leftWheel;
     public WheelCollider rightWheel;
-    public float maxVelocity = 10;
-    public float spinForce = 1;
-
+    public float maxMotorTorque = 150f;   // fuerza aplicada cuando se acelera
+    public float maxBrakeTorque = 300f;   // fuerza de frenado
     // Update is called once per frame
-    void Update()
-    {
-        int horizontalInput =(int) Input.GetAxis("Horizontal");
-        int verticalInput = (int) Input.GetAxis("Vertical");
-        float rotationVelocity = maxVelocity;
+    void Update(){
+        float v = Input.GetAxis("Vertical");   // W/S o flechas arriba/abajo
+        float h = Input.GetAxis("Horizontal"); // A/D o flechas izquierda/derecha
 
-        if( horizontalInput != 0 ){
-            leftWheel.brakeTorque = 0;
-            rightWheel.brakeTorque = 0;
+        // Aplicar torque a las ruedas para mover el vehículo
+        float leftTorque  = (v + h) * maxMotorTorque;
+        float rightTorque = (v - h) * maxMotorTorque;
 
-            if(leftWheel.rotationSpeed > 360){
-                leftWheel.motorTorque = rotationVelocity * horizontalInput;
-            } else {
-                leftWheel.motorTorque = 0;
-            }
-            // leftWheel.transform.Rotate((Time.deltaTime * rotationVelocity), 0, 0);
-            
-            if(rightWheel.rotationSpeed > 360){
-                rightWheel.motorTorque = -rotationVelocity * horizontalInput;
-            } else{
-                rightWheel.motorTorque = 0;
-            }
-            // rightWheel.transform.Rotate((Time.deltaTime * rotationVelocity), 0, 0);
-
-            Debug.Log("\nVel Rueda Izq = " + leftWheel.rotationSpeed + "\nVel Rueda Der = " + rightWheel.rotationSpeed);
-        } else if( verticalInput != 0 ){ 
-            leftWheel.brakeTorque = 0;
-            rightWheel.brakeTorque = 0;
-
-            leftWheel.motorTorque = rotationVelocity * verticalInput;
-            leftWheel.transform.Rotate((Time.deltaTime * rotationVelocity), 0, 0);
-            
-            rightWheel.motorTorque = rotationVelocity * verticalInput;
-            rightWheel.transform.Rotate((Time.deltaTime * rotationVelocity), 0, 0);
-
-            Debug.Log((int) Input.GetAxis("Vertical"));
+        if(Mathf.Approximately(v, 0f) && Mathf.Approximately(h, 0f)){
+            // Si no hay input, aplicar freno
+            leftWheel.brakeTorque = maxBrakeTorque;
+            rightWheel.brakeTorque = maxBrakeTorque;
+            leftWheel.motorTorque = 0f;
+            rightWheel.motorTorque = 0f;
         } else {
-            leftWheel.brakeTorque = 100;
-            rightWheel.brakeTorque = 100;
-            Debug.Log("\nVel Rueda Izq = " + leftWheel.rotationSpeed + "\nVel Rueda Der " + rightWheel.rotationSpeed);
+            // Si hay input, aplicar torque y quitar freno
+            leftWheel.brakeTorque = 0f;
+            rightWheel.brakeTorque = 0f;
+            leftWheel.motorTorque = leftTorque;
+            rightWheel.motorTorque = rightTorque;
         }
+        Debug.Log($"V={v:F2}, H={h:F2} | Lspeed={leftWheel.rpm:F1}, Rspeed={rightWheel.rpm:F1}");
+        
     }
 }

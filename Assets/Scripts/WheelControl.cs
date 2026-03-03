@@ -19,19 +19,19 @@ public class WheelControl : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        WheelCollider = GetComponent<WheelCollider>();
+        if (WheelCollider == null)
+            WheelCollider = GetComponent<WheelCollider>();
+
+        if (wheelModel != null)
+            _wheelModelTransform = wheelModel.transform;
     }
 
-    // Update is called once per frame
-    void Update()
+    // Use LateUpdate so visual wheels update after physics
+    void LateUpdate()
     {
-        // Get the Wheel collider's world pose values and
-        // use them to set the wheel model's position and rotation
-        WheelCollider.GetWorldPose(out position, out rotation);
-        // Debug.Log(rotation);
-        // wheelModel.transform.position = position;
-        wheelModel.transform.rotation = rotation;
-
-        // wheelModel.transform.Rotate ((25 * Time.deltaTime), 0, 0 );
+        
     }
+
+    // Cached transform for performance
+    private Transform _wheelModelTransform;
 }
