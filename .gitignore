@@ -41,5 +41,6 @@ sysinfo.txt
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # [Aa]ssets/AssetStoreTools*
-
-desktop.ini
+# Ignore all desktop.ini files
+**/desktop.ini
+*/desktop.ini
