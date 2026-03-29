@@ -1,0 +1,8 @@
+{
+    "port": "COM5",
+    "configuration": "cpu=atmega328old",
+    "board": "arduino:avr:nano",
+    "programmer": "avrisp",
+    "sketch": "Sensores\\260328_UltrasonicSensor\\260328_UltrasonicSensor.ino",
+    "output": "output/build"
+}
