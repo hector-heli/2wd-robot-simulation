@@ -1,29 +1,34 @@
 import serial
 import time
 import threading
-arduino = serial.Serial('COM8', 115200)
+
+arduino = serial.Serial('COM8', 115200, timeout=0.1)
 time.sleep(2)
+arduino.reset_input_buffer()
 
 bandera = threading.Event() 
 bandera.set() 
 
 def move_motors():
     while True:
+        bandera.wait()
+        velocidades = input("")
+        arduino.write((velocidades + '\n').encode()) 
+        bandera.clear()
 
-            bandera.wait()
-            velocidades = input("Ingrese las velocidades para los motores (separadas por una coma):")
-            arduino.write(velocidades.encode('utf-8'))  # Enviar las velocidades al Arduino
-            bandera.clear()
-comunicacion = threading.Thread(target=move_motors)
+
+comunicacion = threading.Thread(target=move_motors, daemon=True)
 comunicacion.start()
-
-while True:
-    
-    
-    
+print("\n")
+while True: 
     if arduino.in_waiting > 0:
-        texto_recibido = arduino.readline().decode('utf-8').rstrip()  
-        print(f"Mensaje recibido del Arduino: {texto_recibido}\n") 
-        bandera.set()
-
-arduino.close() 
+        try:
+            linea = arduino.readline().decode('utf-8', errors='ignore').rstrip()
+            if linea:
+                rpm_R,rpm_L,IR_R,IR_L,sonar, ts = linea.split(',')
+                
+                
+                print(f"RPM recibidas: {rpm_L}, {rpm_R} Sensor de piso: {IR_L}, {IR_R} Sonar: {sonar}  ts: {ts}    ", end='\r')
+                bandera.set()
+        except:
+            pass
