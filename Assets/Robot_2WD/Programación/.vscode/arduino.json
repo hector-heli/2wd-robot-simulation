@@ -3,6 +3,6 @@
     "configuration": "cpu=atmega328old",
     "board": "arduino:avr:nano",
     "programmer": "avrisp",
-    "sketch": "Sensores\\260328_UltrasonicSensor\\260328_UltrasonicSensor.ino",
+    "sketch": "AdvanceHardwareTesting\\260328_KeyboardRobot\\260328_KeyboardRobot.ino",
     "output": "output/build"
 }
