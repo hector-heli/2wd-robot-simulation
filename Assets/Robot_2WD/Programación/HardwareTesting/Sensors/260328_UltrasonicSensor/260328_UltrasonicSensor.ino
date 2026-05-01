@@ -52,12 +52,24 @@ void loop() {
   distancia = duracion * 0.034 / 2;
   
   // 5. Imprimir el resultado en el Monitor Serie
+  if(distancia <= 30 && distancia >= 0) {
+    Serial.print(">");
+    Serial.print("Distancia: ");
+    Serial.print(distancia);
+    Serial.println("");
+  }
+
   Serial.print(">");
-  Serial.print("Distancia: ");
-  Serial.print(distancia);
+  Serial.print("Max: ");
+  Serial.print(30);
+  Serial.println("");
+
+  Serial.print(">");
+  Serial.print("Min: ");
+  Serial.print(0);
   Serial.println("");
   
   // Pausa corta antes de la siguiente medición
-  delay(100);
+  delay(10);
 }
 

@@ -11,7 +11,7 @@ donde X es el ángulo actual del servo.
 #include <mapping.h>
 #include <Servo.h>
 
-int time = 25;
+int time = 10; // Tiempo de espera en milisegundos para que el servo alcance la posición deseada
 
 Servo servo;
 void setup() {

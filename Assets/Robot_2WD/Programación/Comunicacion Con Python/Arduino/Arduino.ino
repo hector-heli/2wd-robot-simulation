@@ -1,16 +1,16 @@
 #include <Arduino.h>
-#include <mapping.h>
+#include <robot_config.h>
 #include <NewPing.h>
 #include <SoftwareSerial.h>
 #include <Servo.h>
-#include <PID_v1.h>
+#include <PID_v1_bc.h>
+
+#define MAX_DISTANCE 25 // Distancia máxima para el sensor ultrasónico (en cm)
 
 
 // SoftwareSerial BT(Serial_RX_PIN, Serial_TX_PIN);  // RX, TX para Bluetooth
 NewPing sonar(SONAR_TRIGGER_PIN, SONAR_ECHO_PIN, MAX_DISTANCE);
 Servo servo;
-
-
 
 
 //PID de los motores

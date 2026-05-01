@@ -128,10 +128,10 @@
 #define CMD_STOP                'S'       // Detener
 
 // Comandos de velocidad
-#define CMD_LEFT_SPEED_UP       'T'       // Aumentar velocidad izquierda
-#define CMD_LEFT_SPEED_DOWN     'S'       // Disminuir velocidad izquierda
-#define CMD_RIGHT_SPEED_UP      'C'       // Aumentar velocidad derecha
-#define CMD_RIGHT_SPEED_DOWN    'X'       // Disminuir velocidad derecha
+#define CMD_LEFT_SPEED_UP       't'       // Aumentar velocidad izquierda
+#define CMD_LEFT_SPEED_DOWN     's'       // Disminuir velocidad izquierda
+#define CMD_RIGHT_SPEED_UP      'c'       // Aumentar velocidad derecha
+#define CMD_RIGHT_SPEED_DOWN    'x'       // Disminuir velocidad derecha
 
 // ============================================================================
 // CONFIGURACIÓN DE MODOS DE OPERACIÓN
@@ -163,6 +163,13 @@
 // FUNCIONES DE CONFIGURACIÓN DE PINES I/O
 // ============================================================================
 
+int rCountEncoder, lCountEncoder;
+int rCountEncoderPrev, lCountEncoderPrev;
+char command;
+
+void rightEncoder_ISR(){ command == 'B'? rCountEncoder--: rCountEncoder++;}
+void leftEncoder_ISR(){ command == 'B'? lCountEncoder--: lCountEncoder++;}
+
 /**
  * Configura todos los pines de entrada del robot
  * Incluye: Encoders, sensores IR, sensor ultrasónico
@@ -184,6 +191,18 @@ void setupInputPins() {
 }
 
 /**
+ * Detiene todos los motores del robot
+ */
+void stopAllMotors() {
+  digitalWrite(LEFT_MOTOR_IN1, LOW);
+  digitalWrite(LEFT_MOTOR_IN2, LOW);
+  digitalWrite(RIGHT_MOTOR_IN3, LOW);
+  digitalWrite(RIGHT_MOTOR_IN4, LOW);
+  analogWrite(LEFT_MOTOR_ENA, 0);
+  analogWrite(RIGHT_MOTOR_ENB, 0);
+}
+
+/**
  * Configura todos los pines de salida del robot
  * Incluye: Motores, servo, sensor ultrasónico trigger
  */
@@ -199,12 +218,7 @@ void setupOutputPins() {
   pinMode(RIGHT_MOTOR_ENB, OUTPUT);
   
   // Detener motores inicialmente
-  digitalWrite(LEFT_MOTOR_IN1, LOW);
-  digitalWrite(LEFT_MOTOR_IN2, LOW);
-  digitalWrite(RIGHT_MOTOR_IN3, LOW);
-  digitalWrite(RIGHT_MOTOR_IN4, LOW);
-  analogWrite(LEFT_MOTOR_ENA, 0);
-  analogWrite(RIGHT_MOTOR_ENB, 0);
+  stopAllMotors();
   
   // Configurar servo (si está habilitado)
   pinMode(SERVO_PIN, OUTPUT);
@@ -217,6 +231,17 @@ void setupOutputPins() {
 }
 
 /**
+ * Configura las interrupciones para los encoders
+ * Requiere: #include <Arduino.h>
+ */
+void setupEncoderInterrupts() {
+  if (ENABLE_ENCODERS) {
+    attachInterrupt(digitalPinToInterrupt(LEFT_ENCODER), leftEncoder_ISR, RISING);
+    attachInterrupt(digitalPinToInterrupt(RIGHT_ENCODER), rightEncoder_ISR, RISING);
+  } 
+}
+
+/**
  * Configura la comunicación serial (depuración)
  */
 void setupSerial() {
@@ -225,30 +250,13 @@ void setupSerial() {
   
   if (DEBUG_MODE) {
     Serial.println("╔════════════════════════════════════════╗");
-    Serial.println("║      ROBOT 2WD - INICIANDO SISTEMA    ║");
+    Serial.println("║      ROBOT 2WD - INICIANDO SISTEMA     ║");
     Serial.println("╚════════════════════════════════════════╝");
     Serial.print("Nombre: ");
     Serial.println(ROBOT_NAME);
     Serial.print("Versión: ");
     Serial.println(ROBOT_VERSION);
     Serial.println("═══════════════════════════════════════════");
-  }
-}
-
-/**
- * Configura la comunicación Bluetooth HC-06
- * Requiere: #include <SoftwareSerial.h>
- * Uso: SoftwareSerial BT = setupBluetooth();
- */
-void setupBluetoothPins() {
-  if (ENABLE_BLUETOOTH) {
-    if (DEBUG_MODE) {
-      Serial.println("[INFO] Módulo Bluetooth configurado");
-      Serial.print("  TX Pin: ");
-      Serial.println(BT_TX_PIN);
-      Serial.print("  RX Pin: ");
-      Serial.println(BT_RX_PIN);
-    }
   }
 }
 
@@ -260,7 +268,7 @@ void initializeRobot() {
   setupSerial();
   setupInputPins();
   setupOutputPins();
-  setupBluetoothPins();
+  setupEncoderInterrupts();
   
   if (DEBUG_MODE) {
     Serial.println("[✓] Pines I/O inicializados correctamente");
@@ -269,17 +277,7 @@ void initializeRobot() {
   }
 }
 
-/**
- * Detiene todos los motores del robot
- */
-void stopAllMotors() {
-  digitalWrite(LEFT_MOTOR_IN1, LOW);
-  digitalWrite(LEFT_MOTOR_IN2, LOW);
-  digitalWrite(RIGHT_MOTOR_IN3, LOW);
-  digitalWrite(RIGHT_MOTOR_IN4, LOW);
-  analogWrite(LEFT_MOTOR_ENA, 0);
-  analogWrite(RIGHT_MOTOR_ENB, 0);
-}
+
 
 /**
  * Established velocidad de un motor específico
@@ -287,7 +285,7 @@ void stopAllMotors() {
  * speed: 0-255 (PWM)
  */
 void setMotorSpeed(uint8_t motor, uint8_t speed) {
-  speed = constrain_speed(speed);
+  //speed = constrain_speed(speed);
   
   if (motor == 0) {  // Motor izquierdo
     analogWrite(LEFT_MOTOR_ENA, speed);
@@ -386,7 +384,7 @@ boolean hasObstacle() {
  */
 void printRobotStatus() {
   Serial.println("╔════════════════════════════════════════╗");
-  Serial.println("║         ESTADO DEL ROBOT 2WD          ║");
+  Serial.println("║         ESTADO DEL ROBOT 2WD           ║");
   Serial.println("╚════════════════════════════════════════╝");
   
   if (ENABLE_IR_SENSORS) {

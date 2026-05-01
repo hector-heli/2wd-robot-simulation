@@ -8,6 +8,7 @@ Este código es un programa de control de motores para un robot, que utiliza com
 #include <SoftwareSerial.h>
 SoftwareSerial BT(BT_TX_PIN, BT_RX_PIN);  // RX=11, TX=10 para HC-06
 
+
 void setup() {
   BT.begin(BLUETOOTH_BAUD);
   initializeRobot();
@@ -16,19 +17,19 @@ void setup() {
 
 void loop() {
   if (Serial.available() > 0) {
-    char command = Serial.read();
-    Serial.print("Received command: "); 
+    command = Serial.read();
+    Serial.print("Comando Serial Recibido: "); 
     Serial.println(command);
 
     robotMotionControl(command);
   }
 
   if (BT.available() > 0) {
-    char cmd = BT.read();
-    Serial.print("Received Bluetooth command: "); 
-    Serial.println(cmd);
+    command = BT.read();
+    Serial.print("Comando Bluetooth Recibido: "); 
+    Serial.println(command);
 
-    robotMotionControl(cmd);
+    robotMotionControl(command);
   } 
   printEncoderCounts();  
  }

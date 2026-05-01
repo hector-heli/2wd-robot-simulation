@@ -3,6 +3,7 @@
     "configuration": "cpu=atmega328old",
     "board": "arduino:avr:nano",
     "programmer": "avrisp",
-    "sketch": "AdvanceHardwareTesting\\260328_KeyboardRobot\\260328_KeyboardRobot.ino",
-    "output": "output/build"
+    "sketch": "HardwareTesting\\Motors\\260316_Encoder\\260316_Encoder.ino",
+    "output": "output",
+    "arduinoPath": "Libraries"
 }
