@@ -1,3 +1,5 @@
+#include <Arduino.h>
+#line 1 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
 /* 
  * Control de un robot con Bluetooth HC-06 y L298N
  * 
@@ -34,6 +36,29 @@ int velMax = 255, velMin = 80;
 
 int rightWheelVelocity = 200, leftWheelVelocity = 200;
 
+#line 37 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
+void setup();
+#line 44 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
+void loop();
+#line 69 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
+void front();
+#line 79 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
+void back();
+#line 89 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
+void right();
+#line 99 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
+void left();
+#line 110 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
+void stop();
+#line 115 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
+void rightPlus();
+#line 116 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
+void rightMinus();
+#line 117 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
+void leftPlus();
+#line 118 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
+void leftMinus();
+#line 37 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
 void setup() {
   Serial.begin(115200);  // Debug
   BT.begin(9600);      // HC-06
@@ -116,4 +141,5 @@ void rightPlus(){ rightWheelVelocity < velMax? rightWheelVelocity += 10: rightWh
 void rightMinus(){ rightWheelVelocity > velMin? rightWheelVelocity -= 10: rightWheelVelocity = velMin;}
 void leftPlus(){ leftWheelVelocity < velMax? leftWheelVelocity += 10: leftWheelVelocity = velMax;}
 void leftMinus(){ leftWheelVelocity > velMin? leftWheelVelocity -= 10: leftWheelVelocity = velMin;}
+
 

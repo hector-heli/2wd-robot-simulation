@@ -6,11 +6,11 @@ Copie este archivo y péguelo en la carpeta ../Documents/Arduino/libraries/IOMap
     ENCODERS:
         - Right Encoder: Pin 3
         - Left Encoder: Pin 2
-        - Pulses Per Revolution: 40
+        - Pulses Per Revolution: 22
 */
 #define     RIGHT_ENCODER   3
 #define     LEFT_ENCODER    2 
-#define     ENCODER_PPR     40 
+#define     ENCODER_PPR     22 
 /*
     IR SENSORS:
         - Right IR Sensor: Pin A0

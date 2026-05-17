@@ -3,7 +3,7 @@
     "configuration": "cpu=atmega328old",
     "board": "arduino:avr:nano",
     "programmer": "avrisp",
-    "sketch": "HardwareTesting\\Motors\\260316_Encoder\\260316_Encoder.ino",
+    "sketch": "HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino",
     "output": "output",
     "arduinoPath": "Libraries"
 }

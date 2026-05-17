@@ -10,12 +10,22 @@
     "Includepath": "C:\\Users\\hh_rg\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.7\\variants\\eightanaloginputs"
   },
   {
-    "Sourcefile": "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\output\\sketch\\260316_Encoder.ino.cpp",
+    "Sourcefile": "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\output\\sketch\\260315_BluethootControl.ino.cpp",
     "Include": "mapping.h",
     "Includepath": "C:\\Users\\hh_rg\\OneDrive\\Documentos\\Arduino\\libraries\\IOMaps"
   },
   {
-    "Sourcefile": "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\output\\sketch\\260316_Encoder.ino.cpp",
+    "Sourcefile": "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\output\\sketch\\260315_BluethootControl.ino.cpp",
+    "Include": "SoftwareSerial.h",
+    "Includepath": "C:\\Users\\hh_rg\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.7\\libraries\\SoftwareSerial\\src"
+  },
+  {
+    "Sourcefile": "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\output\\sketch\\260315_BluethootControl.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\hh_rg\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.7\\libraries\\SoftwareSerial\\src\\SoftwareSerial.cpp",
     "Include": "",
     "Includepath": null
   }
