@@ -1,135 +1,80 @@
-# 1 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
-/* 
+# 1 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\Motors\\260417_ControlMotorPID\\260417_ControlMotorPID.ino"
+# 2 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\Motors\\260417_ControlMotorPID\\260417_ControlMotorPID.ino" 2
 
- * Control de un robot con Bluetooth HC-06 y L298N
+float frontVelocity, angularVelocity;
+/////////////////////////// COMUNICACION SERIAL //////////////////
+String inputString = "";
+bool stringComplete = false;
+const char separator = ',';
+const int dataLength = 2;
+int data[dataLength];
 
- * 
+//////////////////////// TIEMPO DE MUESTREO ///////////////
+unsigned long lastTime, sampleTime = 100;
 
- * Comandos:
-
- * F: Adelante
-
- * B: Atrás
-
- * L: Giro a la izquierda
-
- * R: Giro a la derecha
-
- * S: Disminuir velocidad rueda izquierda
-
- * T: Aumentar velocidad rueda izquierda
-
- * X: Disminuir velocidad rueda derecha
-
- * C: Aumentar velocidad rueda derecha
-
- * Velocidad máxima: 255
-
- * Velocidad mínima: 80
-
- * El programa utiliza la librería SoftwareSerial para comunicarse con el módulo Bluetooth HC-06, y controla los motores a través del driver L298N. La velocidad de cada rueda se puede ajustar individualmente mediante los comandos enviados desde el dispositivo Bluetooth, permitiendo el movimiento del robot
-
-
-
-*/
-# 19 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino"
-# 20 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino" 2
-# 21 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\ControlTesting\\260315_BluethootControl\\260315_BluethootControl.ino" 2
-SoftwareSerial BT(10, 11); // RX=11, TX=10 para HC-06
-
-// Pines L298N Motores Izquierdos
-int IN1 = 4;
-int IN2 = 6;
-int ENA = 5; // PWM
-
-// Pines L298N Motores Derechos
-int IN3 = 7;
-int IN4 = 8;
-int ENB = 9; // PWM
-
-int velMax = 255, velMin = 80;
-
-int rightWheelVelocity = 200, leftWheelVelocity = 200;
+int outValue1 = 0;
+int outValue2 = 0;
+double w1 = 0.0, w2 = 0.0;
+const double constValue = 1; //3.1733;
 
 void setup() {
-  Serial.begin(115200); // Debug
-  BT.begin(9600); // HC-06
-  for(int i=5; i<=9; i++ )pinMode(i, 0x1);
-  for(int i=5; i<=9; i++ )digitalWrite(i, 0x0);
+  initializeRobot();
+  printRobotStatus();
+  lastTime = millis();
 }
 
 void loop() {
   if (BT.available()) {
-    char cmd = BT.read();
+    char cmd = (char)BT.read();
+    inputString += cmd;
+    if( cmd == '\n') stringComplete = true;
     Serial.println(cmd); // Debug
-    switch (cmd) {
-      case 'F': front(); break;
-      case 'L': left(); break;
-      case 'R': right(); break;
-      case 'B': back(); break;
-      case 't': leftPlus(); break;
-      case 'x': rightMinus(); break;
-      case 's': leftMinus(); break;
-      case 'c': rightPlus(); break;
-      default: stop();
+  }
+
+  if(stringComplete) {
+    for( int i =0; i<dataLength; i++) {
+      int index = inputString.indexOf(separator);
+      data[i]=inputString.substring(0,index).toInt();
+      inputString = inputString.substring(index+1);
     }
+    outValue1 = data[0];
+    outValue2 = data[1];
+    if(outValue1 > 0) controlMotor(0, outValue1); else controlMotor(0, -((outValue1)>0?(outValue1):-(outValue1)));
+    if(outValue2 > 0) controlMotor(1, outValue2); else controlMotor(1, -((outValue2)>0?(outValue2):-(outValue2)));
+    inputString = "";
+    stringComplete = false;
+  }
+
+  if(millis()-lastTime >= sampleTime) {
+    
+# 48 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\Motors\\260417_ControlMotorPID\\260417_ControlMotorPID.ino" 3
+   __asm__ __volatile__ ("cli" ::: "memory")
+# 48 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\Motors\\260417_ControlMotorPID\\260417_ControlMotorPID.ino"
+                 ;
+    w1 =(constValue*lCountEncoder)/(millis()-lastTime);
+    w2 =(constValue*rCountEncoder)/(millis()-lastTime);
+    
+# 51 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\Motors\\260417_ControlMotorPID\\260417_ControlMotorPID.ino" 3
+   __asm__ __volatile__ ("sei" ::: "memory")
+# 51 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\Motors\\260417_ControlMotorPID\\260417_ControlMotorPID.ino"
+               ;
+    lastTime = millis();
+    lCountEncoder = 0;
+    rCountEncoder = 0;
     Serial.print(">");
-    Serial.print("Vel_Izq:");
-    Serial.print(leftWheelVelocity);
+    Serial.print("v_derecha_rad_s");
+    Serial.print(w1);
     Serial.print(",");
-    Serial.print("Vel_Der:");
-    Serial.print(rightWheelVelocity);
-    Serial.println();
+    Serial.print("v_izquierda_rad_s");
+    Serial.print(w2);
+    Serial.println("");
   }
 }
 
-void front() {
-  digitalWrite(7, 0x0);
-  digitalWrite(8, 0x1);
-  analogWrite(9, rightWheelVelocity);
-
-  digitalWrite(4, 0x1);
-  digitalWrite(6, 0x0);
-  analogWrite(5, leftWheelVelocity);
+void serialEvent() {
+  while(Serial.available()) {
+    char inChar = (char)Serial.read();
+    inputString += inChar;
+    if( inChar == '\n') stringComplete = true;
+  }
 }
-
-void back() {
-  digitalWrite(7, 0x1);
-  digitalWrite(8, 0x0);
-  analogWrite(9, rightWheelVelocity);
-
-  digitalWrite(4, 0x0);
-  digitalWrite(6, 0x1);
-  analogWrite(5, leftWheelVelocity);
-}
-
-void right() {
-  digitalWrite(7, 0x0);
-  digitalWrite(8, 0x0);
-  analogWrite(9, rightWheelVelocity);
-
-  digitalWrite(4, 0x1);
-  digitalWrite(6, 0x0);
-  analogWrite(5, leftWheelVelocity);
-}
-
-void left() {
-  digitalWrite(7, 0x0);
-  digitalWrite(8, 0x1);
-  analogWrite(9, rightWheelVelocity);
-
-  digitalWrite(4, 0x0);
-  digitalWrite(6, 0x0);
-  analogWrite(5, leftWheelVelocity);
-
-}
-
-void stop() {
-  digitalWrite(IN1, 0x0); digitalWrite(IN2, 0x0); analogWrite(ENA, 0);
-  digitalWrite(IN3, 0x0); digitalWrite(IN4, 0x0); analogWrite(ENB, 0);
-}
-
-void rightPlus(){ rightWheelVelocity < velMax? rightWheelVelocity += 10: rightWheelVelocity = velMax;}
-void rightMinus(){ rightWheelVelocity > velMin? rightWheelVelocity -= 10: rightWheelVelocity = velMin;}
-void leftPlus(){ leftWheelVelocity < velMax? leftWheelVelocity += 10: leftWheelVelocity = velMax;}
-void leftMinus(){ leftWheelVelocity > velMin? leftWheelVelocity -= 10: leftWheelVelocity = velMin;}

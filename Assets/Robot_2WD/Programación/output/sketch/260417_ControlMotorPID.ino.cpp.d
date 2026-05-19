@@ -1,5 +1,5 @@
-C:\Users\hh_rg\OneDrive\Escritorio\2WD\ Robot\ Simulation\Assets\Robot_2WD\Programación\output\sketch\260315_BluethootControl.ino.cpp.o: \
- C:\Users\hh_rg\OneDrive\Escritorio\2WD\ Robot\ Simulation\Assets\Robot_2WD\Programación\output\sketch\260315_BluethootControl.ino.cpp \
+C:\Users\hh_rg\OneDrive\Escritorio\2WD\ Robot\ Simulation\Assets\Robot_2WD\Programación\output\sketch\260417_ControlMotorPID.ino.cpp.o: \
+ C:\Users\hh_rg\OneDrive\Escritorio\2WD\ Robot\ Simulation\Assets\Robot_2WD\Programación\output\sketch\260417_ControlMotorPID.ino.cpp \
  C:\Users\hh_rg\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.7\cores\arduino/Arduino.h \
  C:\Users\hh_rg\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.7\cores\arduino/binary.h \
  C:\Users\hh_rg\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.7\cores\arduino/WCharacter.h \
@@ -12,6 +12,6 @@ C:\Users\hh_rg\OneDrive\Escritorio\2WD\ Robot\ Simulation\Assets\Robot_2WD\Progr
  C:\Users\hh_rg\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.7\cores\arduino/Arduino.h \
  C:\Users\hh_rg\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.7\variants\eightanaloginputs/pins_arduino.h \
  c:\users\hh_rg\appdata\local\arduino15\packages\arduino\hardware\avr\1.8.7\variants\standard\pins_arduino.h \
- C:\Users\hh_rg\OneDrive\Documentos\Arduino\libraries\IOMaps/mapping.h \
+ C:\Users\hh_rg\OneDrive\Documentos\Arduino\libraries\IOMaps/robot_config.h \
  C:\Users\hh_rg\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.7\libraries\SoftwareSerial\src/SoftwareSerial.h \
  C:\Users\hh_rg\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.7\cores\arduino/Stream.h

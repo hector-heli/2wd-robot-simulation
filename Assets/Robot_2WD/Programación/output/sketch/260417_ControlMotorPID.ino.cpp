@@ -1,3 +1,5 @@
+#include <Arduino.h>
+#line 1 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\Motors\\260417_ControlMotorPID\\260417_ControlMotorPID.ino"
 #include <robot_config.h>
 
 float frontVelocity, angularVelocity;
@@ -16,6 +18,13 @@ int outValue2 = 0;
 double w1 = 0.0, w2 = 0.0;
 const double constValue = 1;  //3.1733;
 
+#line 19 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\Motors\\260417_ControlMotorPID\\260417_ControlMotorPID.ino"
+void setup();
+#line 25 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\Motors\\260417_ControlMotorPID\\260417_ControlMotorPID.ino"
+void loop();
+#line 65 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\Motors\\260417_ControlMotorPID\\260417_ControlMotorPID.ino"
+void serialEvent();
+#line 19 "C:\\Users\\hh_rg\\OneDrive\\Escritorio\\2WD Robot Simulation\\Assets\\Robot_2WD\\Programación\\HardwareTesting\\Motors\\260417_ControlMotorPID\\260417_ControlMotorPID.ino"
 void setup() {
   initializeRobot();
   printRobotStatus();
@@ -69,3 +78,4 @@ void serialEvent() {
     if( inChar == '\n') stringComplete = true;   
   }
 }
+

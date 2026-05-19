@@ -15,12 +15,12 @@
 // ============================================================================
 #define ROBOT_NAME              "2WD Robot"
 #define ROBOT_VERSION           "1.0"
-#define LAST_MODIFIED           "2026-03-28"
+#define LAST_MODIFIED           "2026-05-01"
 
 // ============================================================================
 // CONFIGURACIÓN DE COMUNICACIÓN
 // ============================================================================
-#define SERIAL_BAUD             9600      // Velocidad de comunicación serial
+#define SERIAL_BAUD             115200    // Velocidad de comunicación serial
 #define BLUETOOTH_BAUD          9600      // Velocidad del módulo Bluetooth HC-06
 
 // ============================================================================
@@ -45,8 +45,8 @@
 #define RIGHT_MOTOR_ENB         9         // PWM para velocidad
 
 // Motor Driver L298N - Motor Izquierdo
-#define LEFT_MOTOR_IN1          4         // Control de dirección
-#define LEFT_MOTOR_IN2          6         // Control de dirección
+#define LEFT_MOTOR_IN1          6         // Control de dirección
+#define LEFT_MOTOR_IN2          4         // Control de dirección
 #define LEFT_MOTOR_ENA          5         // PWM para velocidad
 
 // Servo Motor (si se utiliza)
@@ -110,11 +110,11 @@
 // Parámetros físicos del robot
 #define WHEEL_DIAMETER          6.5       // Diámetro de la rueda en cm
 #define WHEEL_CIRCUMFERENCE     20.42     // Circunferencia = π * diámetro
-#define PULSES_PER_REVOLUTION   20        // Pulsos del encoder por revolución
+#define ENCODER_PPR             44        // Pulsos del encoder por revolución
 #define ROBOT_WHEELBASE         10.0      // Distancia entre ruedas en cm
 
 // Conversión de distancia
-#define CM_PER_PULSE            (WHEEL_CIRCUMFERENCE / PULSES_PER_REVOLUTION)
+#define CM_PER_PULSE            (WHEEL_CIRCUMFERENCE / ENCODER_PPR)
 
 // ============================================================================
 // CONFIGURACIÓN DE CONTROL POR BLUETOOTH
@@ -159,12 +159,15 @@
 // Macros para controlar motores fácilmente
 #define constrain_speed(x)      constrain(x, MOTOR_SPEED_MIN, MOTOR_SPEED_MAX)
 
+#include <SoftwareSerial.h>
+SoftwareSerial BT(BT_RX_PIN, BT_TX_PIN); // RX, TX
+
 // ============================================================================
 // FUNCIONES DE CONFIGURACIÓN DE PINES I/O
 // ============================================================================
 
-int rCountEncoder, lCountEncoder;
-int rCountEncoderPrev, lCountEncoderPrev;
+volatile long rCountEncoder, lCountEncoder;
+long rCountEncoderPrev, lCountEncoderPrev;
 char command;
 
 void rightEncoder_ISR(){ command == 'B'? rCountEncoder--: rCountEncoder++;}
@@ -236,8 +239,8 @@ void setupOutputPins() {
  */
 void setupEncoderInterrupts() {
   if (ENABLE_ENCODERS) {
-    attachInterrupt(digitalPinToInterrupt(LEFT_ENCODER), leftEncoder_ISR, RISING);
-    attachInterrupt(digitalPinToInterrupt(RIGHT_ENCODER), rightEncoder_ISR, RISING);
+    attachInterrupt(digitalPinToInterrupt(LEFT_ENCODER), leftEncoder_ISR, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(RIGHT_ENCODER), rightEncoder_ISR, CHANGE);
   } 
 }
 
@@ -246,6 +249,7 @@ void setupEncoderInterrupts() {
  */
 void setupSerial() {
   Serial.begin(SERIAL_BAUD);
+  BT.begin(BLUETOOTH_BAUD);
   delay(500);
   
   if (DEBUG_MODE) {
@@ -266,6 +270,7 @@ void setupSerial() {
  */
 void initializeRobot() {
   setupSerial();
+  Serial.println("Inicializando robot...");
   setupInputPins();
   setupOutputPins();
   setupEncoderInterrupts();
@@ -276,8 +281,6 @@ void initializeRobot() {
     Serial.println();
   }
 }
-
-
 
 /**
  * Established velocidad de un motor específico
@@ -301,8 +304,8 @@ void setMotorSpeed(uint8_t motor, uint8_t speed) {
  */
 void setMotorDirection(uint8_t motor, boolean forward) {
   if (motor == 0) {  // Motor izquierdo
-    digitalWrite(LEFT_MOTOR_IN1, forward ? HIGH : LOW);
-    digitalWrite(LEFT_MOTOR_IN2, forward ? LOW : HIGH);
+    digitalWrite(LEFT_MOTOR_IN1, forward ? LOW : HIGH);
+    digitalWrite(LEFT_MOTOR_IN2, forward ? HIGH : LOW);
   } else {           // Motor derecho
     digitalWrite(RIGHT_MOTOR_IN3, forward ? LOW : HIGH);
     digitalWrite(RIGHT_MOTOR_IN4, forward ? HIGH : LOW);
