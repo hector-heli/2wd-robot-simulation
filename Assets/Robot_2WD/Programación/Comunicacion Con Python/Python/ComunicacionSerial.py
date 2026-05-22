@@ -2,7 +2,7 @@ import serial
 import time
 import threading
 
-arduino = serial.Serial('COM8', 115200, timeout=0.1)
+arduino = serial.Serial('COM5', 115200, timeout=0.1)
 time.sleep(2)
 arduino.reset_input_buffer()
 
@@ -26,9 +26,9 @@ while True:
             linea = arduino.readline().decode('utf-8', errors='ignore').rstrip()
             if linea:
                 rpm_R,rpm_L,IR_R,IR_L,sonar, ts = linea.split(',')
-                
-                
+                                
                 print(f"RPM recibidas: {rpm_L}, {rpm_R} Sensor de piso: {IR_L}, {IR_R} Sonar: {sonar}  ts: {ts}    ", end='\r')
                 bandera.set()
         except:
             pass
+        

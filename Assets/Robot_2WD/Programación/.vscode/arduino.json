@@ -1,9 +1,9 @@
 {
-    "port": "COM5",
+    "port": "COM6",
     "configuration": "cpu=atmega328old",
     "board": "arduino:avr:nano",
     "programmer": "avrisp",
-    "sketch": "HardwareTesting\\Motors\\260417_ControlMotorPID\\260417_ControlMotorPID.ino",
+    "sketch": "HardwareTesting\\Motors\\260520_ControlMotorLazoAbierto\\260520_ControlMotorLazoAbierto.ino",
     "output": "output",
     "arduinoPath": "Libraries"
 }
